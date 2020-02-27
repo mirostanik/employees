@@ -8,6 +8,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import org.springframework.stereotype.Component;
+
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
@@ -18,11 +20,14 @@ import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
 
+import mstanik.employees.filter.Filter;
+import mstanik.employees.filter.EmployeeFilterFactory;
 import mstanik.employees.model.Employee;
 import mstanik.employees.repository.EmployeeRepository;
 import mstanik.employees.repository.PositionRepository;
 
 @Route
+@Component
 public class MainView extends VerticalLayout {
 
 	/**
@@ -36,13 +41,16 @@ public class MainView extends VerticalLayout {
 	private final Button addButton = new Button("Add");
 	private final Button editButton = new Button("Edit");
 	private final Button deleteButton = new Button("Delete");
+	private final EmployeeFilterFactory filterFactory;
 
-	public MainView(EmployeeRepository employeeRepository, PositionRepository positionRepository) {
+	public MainView(EmployeeRepository employeeRepository, PositionRepository positionRepository,
+			EmployeeFilterFactory filterFactory) {
 		this.employeeRepository = employeeRepository;
 		this.positionRepository = positionRepository;
-		H2 title = new H2("Employees");
+		this.filterFactory = filterFactory;
 
-		add(title);
+		initHeader();
+
 		initFilter();
 
 		initButtons();
@@ -53,6 +61,12 @@ public class MainView extends VerticalLayout {
 
 		filterEmployees("", getEmployees().values());
 
+	}
+
+	private void initHeader() {
+		H2 title = new H2("Employees");
+
+		add(title);
 	}
 
 	private void initGrid() {
@@ -74,16 +88,14 @@ public class MainView extends VerticalLayout {
 	private void initButtons() {
 
 		addButton.addClickListener(e -> {
-			EmployeeEditor dialog = new EmployeeEditor("New Employee", new Employee(), employeeRepository,
-					positionRepository, this::saveEmployee);
+			EmployeeEditor dialog = new EmployeeEditor(positionRepository, this::saveEmployee);
 
 			dialog.open();
 		});
 
 		editButton.addClickListener(e -> {
 			grid.getSelectedItems().stream().findFirst().ifPresent(employee -> {
-				EmployeeEditor dialog = new EmployeeEditor("Update Employee", employee, employeeRepository,
-						positionRepository, this::saveEmployee);
+				EmployeeEditor dialog = new EmployeeEditor(employee, positionRepository, this::saveEmployee);
 				dialog.open();
 			});
 		});
@@ -116,11 +128,11 @@ public class MainView extends VerticalLayout {
 		if (value.trim().isEmpty()) {
 			grid.setItems(employees);
 		} else {
+			Filter<Employee> filter = filterFactory.create(value);
 			grid.setItems(employees.stream().filter(e -> {
-				return new EmployeeFilter(value).match(e);
+				return filter.match(e);
 			}));
 		}
-
 	}
 
 	private Map<Long, Employee> getEmployees() {
@@ -137,6 +149,7 @@ public class MainView extends VerticalLayout {
 		selectSavedEmployee(employee, employees);
 	}
 
+	// select and scroll to saved employee
 	private void selectSavedEmployee(Employee employee, Map<Long, Employee> employees) {
 		Optional.ofNullable(employees.get(employee.getId())).ifPresent(e -> {
 			grid.select(e);

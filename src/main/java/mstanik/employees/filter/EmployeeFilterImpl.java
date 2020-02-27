@@ -1,18 +1,29 @@
-package mstanik.employees.ui;
+package mstanik.employees.filter;
 
 import org.springframework.format.datetime.standard.DateTimeFormatterFactory;
 
 import mstanik.employees.model.Employee;
 
-public class EmployeeFilter {
+public class EmployeeFilterImpl implements Filter<Employee> {
 
 	private final String pattern;
 
-	public EmployeeFilter(String pattern) {
+	public EmployeeFilterImpl(String pattern) {
 		this.pattern = pattern;
 	}
 
-	public boolean match(Employee employee) {
+	@Override
+	public boolean match(Employee employee) { 
+
+		return matchAnyField(employee)|| matchNames(employee);
+	}
+
+	
+	private boolean matchNames(Employee employee) {
+		return (employee.getFirstName()+" "+employee.getLastName()).toLowerCase().startsWith(pattern.toLowerCase());
+	}
+
+	private boolean matchAnyField(Employee employee) {
 		StringBuilder builder = new StringBuilder();
 		builder.append(employee.getId());
 		builder.append("\n");
@@ -27,5 +38,4 @@ public class EmployeeFilter {
 
 		return builder.toString().contains(pattern);
 	}
-
 }
