@@ -10,7 +10,6 @@ import org.springframework.context.ApplicationContext;
 import mstanik.employees.filter.EmployeeFilterFactory;
 import mstanik.employees.repository.EmployeeRepository;
 import mstanik.employees.repository.PositionRepository;
-import mstanik.employees.ui.MainView;
 
 @SpringBootTest
 class ApplicationTests {
@@ -21,8 +20,7 @@ class ApplicationTests {
 	void contextLoads() {
 		assertNotNull(context.getBean(EmployeeRepository.class));
 		assertNotNull(context.getBean(PositionRepository.class));
-		assertNotNull(context.getBean(EmployeeFilterFactory.class).create(""));
-		assertNotNull(context.getBean(MainView.class));
+		assertNotNull(context.getBean(EmployeeFilterFactory.class).create("")); 
 	}
 	
 }
