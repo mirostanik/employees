@@ -24,10 +24,14 @@ public class PositionDataloader implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		LOG.info("Updating positions from IBILLBOARD");
-		restRepository.findAll().forEach(p->{
-			positionRepository.save(p);
-		});
-		
+		try {
+			restRepository.findAll().forEach(p -> {
+				positionRepository.save(p);
+			});
+		} catch (Exception e) {
+			LOG.error("Updating positions failed",e);
+		}
+
 	}
 
 }
