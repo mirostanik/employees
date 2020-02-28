@@ -1,8 +1,6 @@
 package mstanik.employees.repository;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNotSame;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +13,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 public class PositionRepositoryTest {
 
 	@Autowired
-	private PositionRepository repository;
+	private PositionRepositoryREST repository;
 
 	@Test
 	public void testDeserialization() throws JsonMappingException, JsonProcessingException {
-		assertNotNull(repository.findAll());
+		assertFalse(repository.findAll().isEmpty());
 	}
 }

@@ -1,6 +1,7 @@
 package mstanik.employees.repository;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
@@ -31,7 +32,7 @@ public class PositionRepositoryREST {
 		target = client.target("http://ibillboard.com/api/positions");
 	}
 
-	public Iterable<Position> findAll() {
+	public Collection<Position> findAll() {
 		
 		Positions positions;
 		try {
