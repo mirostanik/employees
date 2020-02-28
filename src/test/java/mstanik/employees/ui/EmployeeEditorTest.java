@@ -1,22 +1,19 @@
 package mstanik.employees.ui;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import com.vaadin.flow.component.UI;
 
 import mstanik.employees.repository.PositionRepository;
 
- 
+@SpringBootTest
 public class EmployeeEditorTest {
 
-	private PositionRepository positionRepository;
-
-	@BeforeEach
-	public void setup() {
-		positionRepository = Mockito.mock(PositionRepository.class);
-	}
+	@Autowired
+	private PositionRepository  positionRepository;
 
 	@Test
 	public void test() {

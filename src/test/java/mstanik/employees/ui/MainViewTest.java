@@ -23,7 +23,7 @@ public class MainViewTest {
 
 	@Test
 	public void test() {
-		MainView view = new MainView(employeeRepository, positionRepository, factory);
+		new MainView(employeeRepository, positionRepository, factory);
 		Mockito.verify(employeeRepository, Mockito.only()).findAll();
 		Mockito.verify(factory, Mockito.never()).create(Mockito.anyString());
 	}

@@ -19,15 +19,17 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.ListDataProvider;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.spring.annotation.UIScope;
 
-import mstanik.employees.filter.Filter;
 import mstanik.employees.filter.EmployeeFilterFactory;
+import mstanik.employees.filter.Filter;
 import mstanik.employees.model.Employee;
 import mstanik.employees.repository.EmployeeRepository;
 import mstanik.employees.repository.PositionRepository;
 
 @Route
 @Component
+@UIScope
 public class MainView extends VerticalLayout {
 
 	/**
