@@ -1,0 +1,37 @@
+package mstanik.crud.employee.bootstrap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
+import mstanik.crud.employee.repository.PositionRepository;
+import mstanik.crud.employee.repository.PositionRepositoryREST;
+
+@Component
+public class PositionDataloader implements CommandLineRunner {
+
+	private final PositionRepository positionRepository;
+	private final PositionRepositoryREST restRepository;
+	private static final Logger LOG = LoggerFactory.getLogger(PositionDataloader.class);
+
+	public PositionDataloader(PositionRepository positionRepository, PositionRepositoryREST restRepository) {
+		super();
+		this.positionRepository = positionRepository;
+		this.restRepository = restRepository;
+	}
+
+	@Override
+	public void run(String... args) throws Exception {
+		LOG.info("Updating positions from IBILLBOARD");
+		try {
+			restRepository.findAll().forEach(p -> {
+				positionRepository.save(p);
+			});
+		} catch (Exception e) {
+			LOG.error("Updating positions failed",e);
+		}
+
+	}
+
+}
