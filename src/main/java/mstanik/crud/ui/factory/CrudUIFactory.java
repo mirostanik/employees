@@ -5,7 +5,6 @@ import java.util.function.Consumer;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 
-import mstanik.crud.employee.model.Employee;
 import mstanik.crud.model.IdentifiedEntity;
 
 public interface CrudUIFactory<T extends IdentifiedEntity> {
@@ -17,4 +16,8 @@ public interface CrudUIFactory<T extends IdentifiedEntity> {
 	Dialog createAddDialog(Consumer<T> saveConsumer);
 
 	Dialog createConfirmDeleteDialog(T entity, Consumer<T> deleteConsumer);
+	
+	String getTitle();
+	
+	String getFilterText();
 }

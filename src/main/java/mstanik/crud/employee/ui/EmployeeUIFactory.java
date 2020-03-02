@@ -47,4 +47,15 @@ public class EmployeeUIFactory implements CrudUIFactory<Employee> {
 	public Dialog createConfirmDeleteDialog(Employee entity, Consumer<Employee> deleteConsumer) {
 		return new ConfirmDeleteDialog(entity, deleteConsumer);
 	}
+
+	@Override
+	public String getTitle() {
+		return "Employees";
+	}
+
+	@Override
+	public String getFilterText() {
+		return "Find employee";
+	}
+
 }

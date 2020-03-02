@@ -62,7 +62,7 @@ public class CrudUI<T extends IdentifiedEntity> extends VerticalLayout {
 	}
 
 	private void initHeader() {
-		H2 title = new H2("Employees");
+		H2 title = new H2(uiFactory.getTitle());
 
 		add(title);
 	}
@@ -107,7 +107,7 @@ public class CrudUI<T extends IdentifiedEntity> extends VerticalLayout {
 
 	private void initFilter() {
 		filterText.setClearButtonVisible(true);
-		filterText.setPlaceholder("Find employee");
+		filterText.setPlaceholder(uiFactory.getFilterText());
 		filterText.setValueChangeMode(ValueChangeMode.EAGER);
 		filterText.addValueChangeListener(e -> {
 			filterEntities(e.getValue(), getEntities().values());
@@ -116,12 +116,12 @@ public class CrudUI<T extends IdentifiedEntity> extends VerticalLayout {
 		add(filterText);
 	}
 
-	private void filterEntities(String value, Collection<T> employees) {
+	private void filterEntities(String value, Collection<T> entities) {
 		if (value.trim().isEmpty()) {
-			grid.setItems(employees);
+			grid.setItems(entities);
 		} else {
 			Filter<T> filter = filterFactory.create(value);
-			grid.setItems(employees.stream().filter(e -> {
+			grid.setItems(entities.stream().filter(e -> {
 				return filter.match(e);
 			}));
 		}
@@ -141,7 +141,7 @@ public class CrudUI<T extends IdentifiedEntity> extends VerticalLayout {
 		selectSavedEntity(entity, entities);
 	}
 
-	// select and scroll to saved employee
+	// select and scroll to saved entity
 	private void selectSavedEntity(T entity, Map<Long, T> entities) {
 		Optional.ofNullable(entities.get(entity.getId())).ifPresent(e -> {
 			grid.select(e);
